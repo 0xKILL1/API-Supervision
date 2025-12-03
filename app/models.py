@@ -1,15 +1,17 @@
 from typing import Optional
-from sqlmodel import SQLModel, Field, Column, JSON
+from sqlmodel import SQLModel, Field
 
 class Equipement(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     hostname: str
-    ip: str
+    ip: Optional[str] = None
+    type: str = "Equipement"
+    username: str
+    password: Optional[str] = None
+    key_filename: Optional[str] = None
+    ram: Optional[str] = "8gb"
+    disk: Optional[str] = "C:\\"
+    
 
-class Ordinateur(Equipement):
-    ram : str
-    disk: list[dict] = Field(default_factory=list, sa_column=Column(JSON))
-
-class Routeur(Equipement):
-    nb_interface: int = None
-    ip : Optional[list[dict]] = Field(default_factory=list, sa_column=Column(JSON))
+    nb_interface: Optional[int] = 1
+    interface: Optional[str] = ""
