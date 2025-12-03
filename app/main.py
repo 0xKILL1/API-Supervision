@@ -60,6 +60,9 @@ def read_host(host_id: int, session: Session = Depends(get_session)) -> Equipeme
 
 @app.post("/equipement")
 def create_host(host: Equipement, session: Session = Depends(get_session)) -> Equipement:
+    session.add(host)
+    session.commit(host)
+    session.refresh(host)
     return host
 
 
