@@ -10,7 +10,7 @@ import threading
 import re,os
 import json
 from models import Ordinateur, Equipement, Routeur
-from bdd import configure_db, configure_db_ordinateur, configure_db_routeur
+from bdd import configure_db, engine
 
 ping_regex = re.compile(r"(?P<res>\d) received")
 
@@ -19,8 +19,6 @@ class CommandeRequest(BaseModel):
 
 def on_start_up():
     configure_db()
-    configure_db_ordinateur()
-    configure_db_routeur()
 
 class SSHConnection(BaseModel):
     hostname: Optional[str] = None
@@ -49,14 +47,12 @@ app = FastAPI(on_startup=[on_start_up])
 
 @app.get("/equipements")
 def read_hosts() -> list[Equipement]:
-    engine = configure_db()
     with Session(engine) as session:
         return session.exec(select(Equipement)).all()
 
 
 @app.get("/equipement/{host_id}")
 def read_host(host_id: int) -> Equipement:
-    engine = configure_db()
     with Session(engine) as session:
         host = session.get(Equipement, host_id)
         if not host:
@@ -66,7 +62,6 @@ def read_host(host_id: int) -> Equipement:
 
 @app.post("/equipement")
 def create_host(host: Equipement) -> Equipement:
-    engine = configure_db()
     with Session(engine) as session:
         session.add(host)
         session.commit()
@@ -76,7 +71,6 @@ def create_host(host: Equipement) -> Equipement:
 
 @app.put("/equipement/{host_id}")
 def update_host(host_id: int, updated_host: Equipement):
-    engine = configure_db()
     with Session(engine) as session:
         host = session.get(Equipement, host_id)
         if not host:
@@ -176,7 +170,6 @@ def read_Ordinateurs() -> list[Ordinateur]:
 
 @app.get("/Ordinateur/{host_id}")
 def read_Ordinateur(host_id: int) -> Ordinateur:
-    engine = configure_db_ordinateur()
     with Session(engine) as session:
         ordinateur = session.get(Ordinateur, host_id)
         if not ordinateur:
@@ -186,7 +179,6 @@ def read_Ordinateur(host_id: int) -> Ordinateur:
 
 @app.post("/Ordinateur")
 def create_Ordinateur(ordinateur: Ordinateur) -> Ordinateur:
-    engine = configure_db_ordinateur()
     with Session(engine) as session:
         session.add(ordinateur)
         session.commit()
@@ -196,7 +188,6 @@ def create_Ordinateur(ordinateur: Ordinateur) -> Ordinateur:
 
 @app.put("/Ordinateur/{host_id}")
 def update_Ordinateur(host_id: int, updated_host: Ordinateur):
-    engine = configure_db_ordinateur()
     with Session(engine) as session:
         ordinateur = session.get(Equipement, host_id)
         if not ordinateur:
@@ -211,7 +202,6 @@ def update_Ordinateur(host_id: int, updated_host: Ordinateur):
 
 @app.delete("/Ordinateur/{host_id}")
 def delete_Ordinateur(host_id: int):
-    engine = configure_db_ordinateur()
     with Session(engine) as session:
         ordinateur = session.get(Ordinateur, host_id)
         if not ordinateur:
@@ -223,14 +213,12 @@ def delete_Ordinateur(host_id: int):
 
 @app.get("/Routeurs")
 def read_Routeurs() -> list[Equipement]:
-    engine = configure_db_routeur()
     with Session(engine) as session:
         return session.exec(select(Equipement)).all()
 
 
 @app.get("/Routeur/{host_id}")
 def read_Routeur(host_id: int) -> Equipement:
-    engine = configure_db_routeur()
     with Session(engine) as session:
         routeur = session.get(Routeur, host_id)
         if not routeur:
@@ -240,7 +228,6 @@ def read_Routeur(host_id: int) -> Equipement:
 
 @app.post("/Routeur")
 def create_Routeur(routeur: Routeur) -> Routeur:
-    engine = configure_db_routeur()
     with Session(engine) as session:
         session.add(routeur)
         session.commit()
@@ -250,7 +237,6 @@ def create_Routeur(routeur: Routeur) -> Routeur:
 
 @app.put("/Routeur/{host_id}")
 def update_Routeur(host_id: int, updated_host: Routeur):
-    engine = configure_db_routeur()
     with Session(engine) as session:
         routeur = session.get(Routeur, host_id)
         if not routeur:
@@ -265,7 +251,6 @@ def update_Routeur(host_id: int, updated_host: Routeur):
 
 @app.delete("/Routeur/{host_id}")
 def delete_Routeur(host_id: int):
-    engine = configure_db_routeur()
     with Session(engine) as session:
         routeur = session.get(Routeur, host_id)
         if not routeur:
