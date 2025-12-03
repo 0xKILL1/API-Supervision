@@ -1,11 +1,13 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import APIRouter, FastAPI, HTTPException, Depends
+from fastapi.concurrency import run_in_threadpool
 from sqlmodel import Session, select
 from pydantic import BaseModel
 import threading
 import re,os
 import json
 from ..app.routers import Ordinateur, Equipement, Routeur
-from bdd import configure_db, get_session
+from .bdd import configure_db, get_session
+from .services.ssh_service import
 
 ping_regex = re.compile(r"(?P<res>\d) received")
 
