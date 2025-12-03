@@ -8,29 +8,10 @@ from ..services.ssh_service import SSHConnection
 
 ping_regex = re.compile(r"(?P<res>\d) received")
 
-router = APIRouter(prefix="/equipements",tags=["Gestion des équipements"])
+router = APIRouter(prefix="/supervision",tags=["Gestion des équipements"])
 
 class CommandeRequest(BaseModel):
     commandes: str
-
-@router.post("/ssh/{id}")
-def ssh(id: int, cmd: CommandeRequest, session: Session = Depends(get_session)):
-    eqt = session.get(Ordinateur or Routeur, id)
-    if not eqt:
-        raise HTTPException(404, "Equipement non trouvé")
-        
-    ssh_conn = SSHConnection(
-        hostname=eqt.hostname,
-        username=eqt.username,
-        password=eqt.password
-        )
-    output, error, code = ssh_conn.execute_command(cmd.commandes)
-        
-    return {
-        "output": output,
-        "error": error,
-        "exit_code": code
-    }
 
 @router.get("/Ordinateurs")
 def read_Ordinateurs(session: Session = Depends(get_session)) -> list[Ordinateur]:
@@ -118,3 +99,44 @@ def delete_Routeur(host_id: int, session: Session = Depends(get_session)):
     session.delete(routeur)
     session.commit()
     return {"ok": True}
+
+@router.post("/ssh/Routeur/{id}")
+def ssh_routeur(id: int, cmd: CommandeRequest, session: Session = Depends(get_session)):
+    eqt = session.get(Routeur, id)
+    if not eqt:
+        raise HTTPException(404, "Equipement non trouvé")
+        
+    ssh_conn = SSHConnection(
+        hostname=eqt.hostname if eqt.hostname else eqt.ip,
+        username=eqt.username,
+        password=eqt.password
+        )
+    
+    output, error, code = ssh_conn.execute_command(cmd.commandes)
+        
+    return {
+        "output": output,
+        "error": error,
+        "exit_code": code
+    }
+
+@router.post("/ssh/Ordinateur/{id}")
+def ssh_ordinateur(id: int, cmd: CommandeRequest, session: Session = Depends(get_session)):
+    eqt = session.get(Ordinateur, id)
+    if not eqt:
+        raise HTTPException(404, "Equipement non trouvé")
+        
+    ssh_conn = SSHConnection(
+        hostname=eqt.hostname if eqt.hostname else eqt.ip,
+        username=eqt.username,
+        password=eqt.password,
+        port=2222
+        )
+    
+    output, error, code = ssh_conn.execute_command(cmd.commandes)
+        
+    return {
+        "output": output,
+        "error": error,
+        "exit_code": code
+    }

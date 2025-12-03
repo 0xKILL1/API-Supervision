@@ -8,6 +8,8 @@ class SharedFields(BaseModel):
     hostname: str
     ip: str
     is_up: bool = False
+    username: str
+    password: str
 
 class OrdinateurCreate(SharedFields):
     ram: Optional[str] = None

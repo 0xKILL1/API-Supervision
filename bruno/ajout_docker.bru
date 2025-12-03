@@ -1,0 +1,34 @@
+meta {
+  name: New HTTP Request
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://127.0.0.1:8000/api/v1/equipements/Ordinateur
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "hostname": "localhost",
+      "ip": "172.16.1.105",
+      "is_up": true,
+      "username": "root",
+      "password": "testpassword",
+      "ram": "32 GB DDR4",
+      "disk": [
+          {
+              "name": "OS_C",
+              "size_gb": 512,
+              "type": "SSD"
+          },
+          {
+              "name": "Data_D",
+              "size_gb": 1000,
+              "type": "HDD"
+          }
+      ]
+  }
+}
