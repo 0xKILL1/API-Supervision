@@ -22,7 +22,7 @@ Cette API REST, développée avec **FastAPI**, permet la gestion d'inventaire d'
 ### 1\. Prérequis
 
   * Python 3.9+
-  * Un gestionnaire de paquets (pip ou poetry)
+  * Un gestionnaire de paquets (pip)
 
 ### 2\. Installation des dépendances
 
