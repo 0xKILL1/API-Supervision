@@ -2,14 +2,14 @@
 
 # API Supervision
 
-Cette API offre un ensemble d’outils pour gérer et superviser des équipements tels que des ordinateurs et des routeurs. Elle permet également d’exécuter des commandes via SSH sur ces machines. Le but est simple : offrir un point d’accès direct, efficace et sans artifice pour piloter l’infrastructure.
+Cette API offre un ensemble d’outils pour gérer et superviser des équipements tels que des ordinateurs et des routeurs. Elle permet également d’exécuter des commandes via SSH sur ces machines. Le but est simple : offrir un point d’accès direct pour piloter l’infrastructure.
 
 ---
 
 ## Base URL
 
 ```
-/supervision
+/api/v1/supervision
 ```
 
 ---
@@ -95,13 +95,13 @@ Même fonctionnement que pour les routeurs, mais sur un ordinateur.
    Une fois le serveur en marche, la documentation Swagger est disponible à l’adresse :
 
    ```
-   http://localhost:8000/docs
+   http://localhost:8000/docs#
    ```
 
    Elle permet de tester chaque endpoint directement depuis l’interface, sans écrire une seule ligne de code client.
 
 3. **Tester les endpoints**
-   Depuis `/docs`, vous pouvez :
+   Depuis `/docs#`, vous pouvez :
 
    * consulter les routes disponibles,
    * remplir les champs nécessaires,
